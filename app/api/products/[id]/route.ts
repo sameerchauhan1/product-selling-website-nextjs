@@ -1,9 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
+// For Next.js 13+, route handlers should use this params type
+type Props = {
+   params: {
+      id: string;
+   };
+};
+
 export async function GET(
    request: NextRequest,
-   { params }: { params: { id: string } }
+   { params }: Props // Use the Props type here
 ) {
    const id = parseInt(params.id);
    const product = await prisma.product.findUnique({
@@ -19,7 +26,7 @@ export async function GET(
 
 export async function PUT(
    request: NextRequest,
-   { params }: { params: { id: string } }
+   { params }: Props // Use the Props type here
 ) {
    const id = parseInt(params.id);
    const json = await request.json();
@@ -34,7 +41,7 @@ export async function PUT(
 
 export async function DELETE(
    request: NextRequest,
-   { params }: { params: { id: string } }
+   { params }: Props // Use the Props type here
 ) {
    const id = parseInt(params.id);
 
