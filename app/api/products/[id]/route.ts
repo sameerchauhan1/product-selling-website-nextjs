@@ -1,14 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
-interface RouteParams {
+type Context = {
    params: {
       id: string;
    };
-}
+};
 
-export async function GET(request: NextRequest, { params }: RouteParams) {
-   const id = parseInt(params.id);
+export async function GET(request: NextRequest, context: Context) {
+   const id = parseInt(context.params.id);
    const product = await prisma.product.findUnique({
       where: { id },
    });
@@ -20,8 +20,8 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
    return NextResponse.json(product);
 }
 
-export async function PUT(request: NextRequest, { params }: RouteParams) {
-   const id = parseInt(params.id);
+export async function PUT(request: NextRequest, context: Context) {
+   const id = parseInt(context.params.id);
    const json = await request.json();
 
    const updatedProduct = await prisma.product.update({
@@ -32,8 +32,8 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
    return NextResponse.json(updatedProduct);
 }
 
-export async function DELETE(request: NextRequest, { params }: RouteParams) {
-   const id = parseInt(params.id);
+export async function DELETE(request: NextRequest, context: Context) {
+   const id = parseInt(context.params.id);
 
    await prisma.product.delete({
       where: { id },
