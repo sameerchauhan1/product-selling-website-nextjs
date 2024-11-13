@@ -1,15 +1,11 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
-// GET product by ID
-export async function GET(request: Request) {
-   const { searchParams } = new URL(request.url);
-   const id = parseInt(searchParams.get("id") as string);
-
-   if (isNaN(id)) {
-      return NextResponse.json({ error: "Invalid ID format" }, { status: 400 });
-   }
-
+export async function GET(
+   request: Request,
+   { params }: { params: { id: string } }
+) {
+   const id = parseInt(params.id);
    const product = await prisma.product.findUnique({
       where: { id },
    });
@@ -21,15 +17,11 @@ export async function GET(request: Request) {
    return NextResponse.json(product);
 }
 
-// Update product by ID
-export async function PUT(request: Request) {
-   const { searchParams } = new URL(request.url);
-   const id = parseInt(searchParams.get("id") as string);
-
-   if (isNaN(id)) {
-      return NextResponse.json({ error: "Invalid ID format" }, { status: 400 });
-   }
-
+export async function PUT(
+   request: Request,
+   { params }: { params: { id: string } }
+) {
+   const id = parseInt(params.id);
    const json = await request.json();
 
    const updatedProduct = await prisma.product.update({
@@ -40,14 +32,11 @@ export async function PUT(request: Request) {
    return NextResponse.json(updatedProduct);
 }
 
-// Delete product by ID
-export async function DELETE(request: Request) {
-   const { searchParams } = new URL(request.url);
-   const id = parseInt(searchParams.get("id") as string);
-
-   if (isNaN(id)) {
-      return NextResponse.json({ error: "Invalid ID format" }, { status: 400 });
-   }
+export async function DELETE(
+   request: Request,
+   { params }: { params: { id: string } }
+) {
+   const id = parseInt(params.id);
 
    await prisma.product.delete({
       where: { id },
